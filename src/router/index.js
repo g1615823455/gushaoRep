@@ -145,44 +145,44 @@ export const asyncRoutes = [
       
     ]
   },
-  {
-    path: '/demoOne',
-    component: Layout,
-    redirect: '/demoOne/list',
-    name: 'demoOne',
-    meta: {
-      title: '示例1',
-      icon: 'money'
-    },
-    children: [
-      {
-        path: 'demoOne123',
-        component: () => import('@/pages/demoOne/demoOne123'),
-        name: 'demoOne123',
-        meta: { title: '示例1', icon: 'money' }
-      },
+  // {
+  //   path: '/demoOne',
+  //   component: Layout,
+  //   redirect: '/demoOne/list',
+  //   name: 'demoOne',
+  //   meta: {
+  //     title: '示例1',
+  //     icon: 'money'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'demoOne123',
+  //       component: () => import('@/pages/demoOne/demoOne123'),
+  //       name: 'demoOne123',
+  //       meta: { title: '示例1', icon: 'money' }
+  //     },
       
-    ]
-  },
-  {
-    path: '/tab',
-    component: Layout,
-    redirect: '/tab/list',
-    name: 'tab',
-    meta: {
-      title: '表格',
-      icon: 'money'
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/tab/index'),
-        name: 'index',
-        meta: { title: '表格', icon: 'table' }
-      },
+  //   ]
+  // },
+  // {
+  //   path: '/tab',
+  //   component: Layout,
+  //   redirect: '/tab/list',
+  //   name: 'tab',
+  //   meta: {
+  //     title: '表格',
+  //     icon: 'money'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/tab/index'),
+  //       name: 'index',
+  //       meta: { title: '表格', icon: 'table' }
+  //     },
       
-    ]
-  },
+  //   ]
+  // },
 ]
 
 const createRouter = () => new Router({
