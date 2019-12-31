@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import Login from "../pages/login/login"
 Vue.use(Router)
 
 /* Layout */
@@ -26,6 +26,8 @@ export const constantRoutes = [
   },
   {
     path: '/login',
+    //@/pages/login/login
+    //@/views/login/index
     component: () => import('@/views/login/index'),
     hidden: true
   },
@@ -82,17 +84,52 @@ export const asyncRoutes = [
     },
     children: [
       {
+        //二级
+        path:'/historydata',
+        component: () => import('@/pages/data/HistoryData/index.vue'),
+        name:'historydata',
+        meta:{title:'历史记录',icon:'edit'},
+        children:[
+          {
+            path: 'rzjl',
+            component: () => import('@/pages/data/HistoryData/日志记录.vue'),
+            name: 'rzjl',
+            meta: { title: '日志记录', icon: 'edit' }
+          },
+          {
+            //三级
+            path: 'keyboard',
+            component: () => import('@/pages/data/HistoryData/温湿度.vue'),
+            name: 'keyboard',
+            meta: { title: '温湿度', icon: 'edit' }
+          },
+          {
+            path: 'linemarker',
+            component: () => import('@/pages/data/HistoryData/二氧化碳.vue'),
+            name: 'linemarker',
+            meta: { title: '二氧化碳', icon: 'edit' }
+          },
+          {
+            path: 'mixchart',
+            component: () => import('@/pages/data/HistoryData/烟雾可燃气.vue'),
+            name: 'mixchart',
+            meta: { title: '烟雾可燃气', icon: 'edit' }
+          },
+        ]
+      },
+      {
         path: 'showdata',
         component: () => import('@/pages/data/ShowData'),
         name: 'showdata',
         meta: { title: '消防实时数据', icon: 'edit' }
       },
-      {
-        path: 'historydata',
-        component: () => import('@/pages/data/HistoryData'),
-        name: 'historydata',
-        meta: { title: '历史数据', icon: 'edit' }
-      },
+      // {
+      //   path: 'historydata',
+      //   component: () => import('@/pages/data/HistoryData'),
+      //   name: 'historydata',
+      //   meta: { title: '历史数据', icon: 'edit' }
+      // },
+
       {
         path: 'monitor',
         component: () => import('@/pages/data/Monitor'),

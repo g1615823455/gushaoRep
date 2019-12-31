@@ -97,8 +97,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'g16158',
+        password: 'guoyanjun'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -140,7 +140,8 @@ export default {
   methods: {
     checkCapslock({ shiftKey, key } = {}) {
       if (key && key.length === 1) {
-        if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
+        //shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')
+        if (shiftKey && (key >= 'a' && key <= 'z')) {
           this.capsTooltip = true
         } else {
           this.capsTooltip = false
@@ -161,6 +162,7 @@ export default {
       })
     },
     handleLogin() {
+      
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
