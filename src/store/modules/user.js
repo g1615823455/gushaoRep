@@ -35,12 +35,11 @@ const actions = {
     return new Promise(
       (resolve, reject) => {
         login(
-            { username: username.trim(), password: password }
-          )
-          .then
-          (
+          { username: username.trim(), password: password }
+        )
+          .then(
             response => {
-              console.log('vuex中',response);
+              console.log('vuex中', response)
               const { data } = response
               commit('SET_TOKEN', response.data.token)
               setToken(data.token)

@@ -19,10 +19,8 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 
-
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
-
 
 /**
  * If you don't want to use mock-server
@@ -33,9 +31,9 @@ Vue.prototype.$echarts = echarts
  * please remove it before going online! ! !
  */
 import { mockXHR } from '../mock'
-//if (process.env.NODE_ENV === 'production') {
+// if (process.env.NODE_ENV === 'production') {
 // mockXHR()
-//}
+// }
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
