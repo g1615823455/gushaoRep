@@ -6,7 +6,7 @@ import qs from 'qs'
 // axios.defaults.headers.post["Content-Type"] = 'application/x-www-form-urlencoded;charset=UTF-8';
 // axios.defaults.baseURL = 'http://127.0.0.1:8888';
 //'http://192.168.43.178:8888'
-axios.defaults.baseURL = 'http://127.0.0.1:8888';
+axios.defaults.baseURL = 'http://47.93.255.92:6677';
 axios.interceptors.response.use(function (response) {
   // 将后台的参数结果设置到response
   let {data} = response;

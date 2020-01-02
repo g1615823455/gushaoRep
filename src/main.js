@@ -34,7 +34,7 @@ Vue.prototype.$echarts = echarts
  */
 import { mockXHR } from '../mock'
 //if (process.env.NODE_ENV === 'production') {
-  mockXHR()
+// mockXHR()
 //}
 
 Vue.use(Element, {

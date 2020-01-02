@@ -32,16 +32,26 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+    return new Promise(
+      (resolve, reject) => {
+        login(
+            { username: username.trim(), password: password }
+          )
+          .then
+          (
+            response => {
+              console.log('vuex中',response);
+              const { data } = response
+              commit('SET_TOKEN', response.data.token)
+              setToken(data.token)
+              resolve()
+            }
+          )
+          .catch(error => {
+            reject(error)
+          })
+      }
+    )
   },
 
   // get user info
