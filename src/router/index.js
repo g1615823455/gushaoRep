@@ -67,161 +67,6 @@ export const constantRoutes = [
 
 ]
 
-/**
- * @Description: 权限页面
- * @PageAuthor:  rendc
- * @Date: 2019-12-19 10:04:36
- */
-export const asyncRoutes = [
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
-    meta: {
-      title: '数据展示',
-      icon: 'example'
-    },
-    children: [
-      {
-        //二级
-        path:'/historydata',
-        component: () => import('@/pages/data/HistoryData/index.vue'),
-        name:'historydata',
-        meta:{title:'历史记录',icon:'edit'},
-        children:[
-          {
-            path: 'rzjl',
-            component: () => import('@/pages/data/HistoryData/日志记录.vue'),
-            name: 'rzjl',
-            meta: { title: '日志记录', icon: 'edit' }
-          },
-          {
-            //三级
-            path: 'keyboard',
-            component: () => import('@/pages/data/HistoryData/温湿度.vue'),
-            name: 'keyboard',
-            meta: { title: '温湿度', icon: 'edit' }
-          },
-          {
-            path: 'linemarker',
-            component: () => import('@/pages/data/HistoryData/二氧化碳.vue'),
-            name: 'linemarker',
-            meta: { title: '二氧化碳', icon: 'edit' }
-          },
-          {
-            path: 'mixchart',
-            component: () => import('@/pages/data/HistoryData/烟雾可燃气.vue'),
-            name: 'mixchart',
-            meta: { title: '烟雾可燃气', icon: 'edit' }
-          },
-        ]
-      },
-      {
-        path: 'showdata',
-        component: () => import('@/pages/data/ShowData'),
-        name: 'showdata',
-        meta: { title: '消防实时数据', icon: 'edit' }
-      },
-      // {
-      //   path: 'historydata',
-      //   component: () => import('@/pages/data/HistoryData'),
-      //   name: 'historydata',
-      //   meta: { title: '历史数据', icon: 'edit' }
-      // },
-
-      {
-        path: 'monitor',
-        component: () => import('@/pages/data/Monitor'),
-        name: 'monitor',
-        meta: { title: '实时监控', icon: 'list' }
-      },
-      {
-        path: 'video',
-        component: () => import('@/pages/data/Video'),
-        name: 'video',
-        meta: { title: '录像信息', icon: 'list' }
-      }
-    ]
-  },
-  {
-    path: '/message',
-    component: Layout,
-    redirect: '/message/list',
-    name: 'message',
-    meta: {
-      title: '消息预警中心',
-      icon: 'message'
-    },
-    children: [
-      {
-        path: 'message',
-        component: () => import('@/pages/message/Message'),
-        name: 'message',
-        meta: { title: '预警消息展示', icon: 'edit' }
-      },
-      
-    ]
-  },
-  {
-    path: '/my',
-    component: Layout,
-    redirect: '/my/list',
-    name: 'my',
-    meta: {
-      title: '个人中心',
-      icon: 'my'
-    },
-    children: [
-      {
-        path: 'my',
-        component: () => import('@/pages/my/My'),
-        name: 'myArticle',
-        meta: { title: '个人中心', icon: 'user' }
-      },
-      
-    ]
-  },
-  // {
-  //   path: '/demoOne',
-  //   component: Layout,
-  //   redirect: '/demoOne/list',
-  //   name: 'demoOne',
-  //   meta: {
-  //     title: '示例1',
-  //     icon: 'money'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'demoOne123',
-  //       component: () => import('@/pages/demoOne/demoOne123'),
-  //       name: 'demoOne123',
-  //       meta: { title: '示例1', icon: 'money' }
-  //     },
-      
-  //   ]
-  // },
-  // {
-  //   path: '/tab',
-  //   component: Layout,
-  //   redirect: '/tab/list',
-  //   name: 'tab',
-  //   meta: {
-  //     title: '表格',
-  //     icon: 'money'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/tab/index'),
-  //       name: 'index',
-  //       meta: { title: '表格', icon: 'table' }
-  //     },
-      
-  //   ]
-  // },
-]
-
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
@@ -235,5 +80,148 @@ export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
+
+/**
+ * @Description: 权限页面
+ * @PageAuthor:  rendc
+ * @Date: 2019-12-19 10:04:36
+ */
+export const asyncRoutes = [
+  {
+    path: '/example',
+    component: Layout,
+    redirect: '/example/list',
+    name: 'Example',
+    meta: {
+      title: '数据展示',
+      icon: 'example',
+      roles: ['admin','ordinary']
+    },
+    children: [
+      {
+        //二级
+        path:'/historydata',
+        component: () => import('@/pages/data/HistoryData/index.vue'),
+        name:'historydata',
+        meta:{title:'历史记录',icon:'edit',roles: ['admin','ordinary'] },
+        children:[
+          {
+            path: 'rzjl',
+            component: () => import('@/pages/data/HistoryData/日志记录.vue'),
+            name: 'rzjl',
+            meta: { title: '日志记录', icon: 'edit',roles: ['admin','ordinary'] }
+          },
+          {
+            //三级
+            path: 'keyboard',
+            component: () => import('@/pages/data/HistoryData/温湿度.vue'),
+            name: 'keyboard',
+            meta: { title: '温湿度', icon: 'edit',roles: ['admin','ordinary'] }
+          },
+          {
+            path: 'linemarker',
+            component: () => import('@/pages/data/HistoryData/二氧化碳.vue'),
+            name: 'linemarker',
+            meta: { title: '二氧化碳', icon: 'edit',roles: ['admin','ordinary'] }
+          },
+          {
+            path: 'mixchart',
+            component: () => import('@/pages/data/HistoryData/烟雾可燃气.vue'),
+            name: 'mixchart',
+            meta: { title: '烟雾可燃气', icon: 'edit',roles: ['admin','ordinary'] }
+          },
+        ]
+      },
+      {
+        path: 'showdata',
+        component: () => import('@/pages/data/ShowData'),
+        name: 'showdata',
+        meta: { title: '消防实时数据', icon: 'edit',roles: ['admin','ordinary'] }
+      },
+      // {
+      //   path: 'historydata',
+      //   component: () => import('@/pages/data/HistoryData'),
+      //   name: 'historydata',
+      //   meta: { title: '历史数据', icon: 'edit' }
+      // },
+
+      {
+        path: 'monitor',
+        component: () => import('@/pages/data/Monitor'),
+        name: 'monitor',
+        meta: { title: '实时监控', icon: 'list',roles: ['admin','ordinary'] }
+      },
+      {
+        path: 'video',
+        component: () => import('@/pages/data/Video'),
+        name: 'video',
+        meta: { title: '录像信息', icon: 'list',roles: ['admin','ordinary'] }
+      }
+    ]
+  },
+  {
+    path: '/message',
+    component: Layout,
+    redirect: '/message/list',
+    name: 'message',
+    meta: {
+      title: '消息预警中心',
+      icon: 'message',
+      roles: ['admin','ordinary']
+    },
+    children: [
+      {
+        path: 'message',
+        component: () => import('@/pages/message/Message'),
+        name: 'message',
+        meta: { title: '预警消息展示', icon: 'edit',roles: ['admin','ordinary'] }
+      },
+      
+    ]
+  },
+  {
+    path: '/my',
+    component: Layout,
+    redirect: '/my/list',
+    name: 'my',
+    meta: {
+      title: '个人中心',
+      icon: 'my',
+      roles: ['admin','ordinary']
+    },
+    children: [
+      {
+        path: 'my',
+        component: () => import('@/pages/my/My'),
+        name: 'myArticle',
+        meta: { title: '个人中心', icon: 'user',roles: ['admin','ordinary'] }
+      },
+      
+    ]
+  },
+  {
+    path: '/administer',
+    component: Layout,
+    redirect: '/administer/list',
+    name: 'administer',
+    meta: {
+      title: '用户管理',
+      icon: 'my',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'administer',
+        component: () => import('@/pages/administer/administer'),
+        name: 'UserAdminister',
+        meta: { title: '用户管理', icon: 'user', roles: ['admin']}
+      },
+      
+    ]
+  },
+  
+]
+
+
 
 export default router

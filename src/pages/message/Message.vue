@@ -10,7 +10,7 @@
         end-placeholder="结束日期"
         >
         </el-date-picker>
-        <el-button type="primary" icon="search" @click="search">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" size="small" @click="search">查询</el-button>
     </div>
     <div style="float: right">
       <el-button @click="toggleSelection()">批量处理</el-button>
@@ -34,8 +34,9 @@
     <el-table-column
       prop="newsDate"
       label="预警时间"
-      width="250" 
-      align="center" 
+      width="230" 
+      align="center"
+      :formatter="dateString"
       >
     </el-table-column>
     <el-table-column
@@ -47,7 +48,7 @@
     <el-table-column
       prop="news"
       label="预警信息"
-      width="400" 
+      width="350" 
       align="center">
     </el-table-column>
     <el-table-column
@@ -59,7 +60,7 @@
     <el-table-column
       prop="newsHandled"
       label="是否已处理"
-      width="150" 
+      width="120" 
       align="center" 
       :formatter="formatBoolean">
     </el-table-column>
@@ -67,9 +68,11 @@
       align="center" 
       label="操作"
       width="200">
-      <el-button type="primary" @click="flagChange">处理</el-button>
-      &nbsp;
-      <el-button  @click="flagChange1">删除</el-button>
+      <template slot-scope="scope">
+      <el-button type="primary" icon="el-icon-edit" v-if="scope.row.newsHandled" size="small" @click="flagChange">修改</el-button>
+      <el-button type="primary" icon="el-icon-edit" v-else size="small" @click="flagChange">处理</el-button>
+      <el-button icon="el-icon-delete" type="danger" size="small" @click="flagChange1">删除</el-button>
+      </template>
     </el-table-column>
     </el-table>
   </div>
@@ -106,7 +109,7 @@ import { isNull } from 'util';
         // 个数选择器（可修改）
         pageSizes:[5,8,10],
         // 默认每页显示的条数（可修改）
-        PageSize:5,
+        PageSize:8,
         multipleSelection: [],
         //  pickerOptions: {
         //   shortcuts: [{
@@ -149,10 +152,14 @@ import { isNull } from 'util';
           });
         }
       },
+      // 时间显示处理
+      dateString(row) {
+        let ds = row.newsDate;
+        let nds=ds.slice(0,10)+" "+ds.slice(11,19);
+        return nds;
+      },
       //获取表格的行
       getDetails(row){
-        //console.log(row.newsId)//此时就能拿到整行的信息
-        //this.vvv=row.newsId;
         if(this.vvv==1){
           this.open(row.newsId);
         }

@@ -5,6 +5,7 @@
       type="date"
       placeholder="选择日期">
     </el-date-picker>
+    <br><br>
     <chart height="100%" width="100%" />
   </div>
 </template>
@@ -51,8 +52,9 @@ export default {
 
 <style scoped>
 .chart-container{
+  background: white;
   position: relative;
   width: 100%;
-  height: calc(100vh - 84px);
+  height: calc(100vh - 150px);
 }
 </style>

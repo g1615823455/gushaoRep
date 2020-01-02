@@ -10,7 +10,7 @@
         end-placeholder="结束日期" 
         unlink-panels>
       </el-date-picker>
-      <el-button type="primary" icon="search" @click="search">查询</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
     </div>
     <div id="deal">
       <el-button @click="deleteSelection()">批量删除</el-button>
@@ -33,7 +33,8 @@
       prop="secTime"
       label="记录时间"
       width="300" 
-      align="center">
+      align="center" 
+      :formatter="dateString">
     </el-table-column>
     <el-table-column
       prop="secMessage"
@@ -46,9 +47,8 @@
       label="操作"
       width="200"
       show-overflow-tooltip>
-      <el-button type="primary" @click="flagChange">播放</el-button>
-      &nbsp;
-      <el-button  @click="flagChange1">删除</el-button>
+      <el-button type="primary" icon="el-icon-video-play" size="small" @click="flagChange">播放</el-button>
+      <el-button icon="el-icon-delete" type="danger" size="small" @click="flagChange1">删除</el-button>
       </el-table-column>
     </el-table>
   </div>
@@ -127,9 +127,13 @@ import {mapState,mapActions,mapGetters} from 'vuex'
           });
         }
       },
+      // 时间显示处理
+      dateString(row) {
+        let ds = row.secTime;
+        let nds=ds.slice(0,10)+" "+ds.slice(11,19);
+        return nds;
+      },
       getDetails(row){
-        //console.log(row.newsId)//此时就能拿到整行的信息
-        //this.vvv=row.securityId;
         if(this.values==1){
           this.videoUrl=row.securityAdres;
           this.open(row.securityAdres);
@@ -145,15 +149,6 @@ import {mapState,mapActions,mapGetters} from 'vuex'
       flagChange1(){
         this.values=2;
       },
-      //是否已处理
-      /*formatBoolean: function (row, column, cellValue) {
-        var ret = ''  //你想在页面展示的值
-        if (cellValue) {
-            ret = "是"  //根据自己的需求设定
-        } else {
-            ret = "否"
-        }
-        return ret;},*/
       deleteSelection(){
         let allrow=this.$refs.multipleTable.selection;
         let ids="";
@@ -212,7 +207,6 @@ import {mapState,mapActions,mapGetters} from 'vuex'
       handleButton(val){
         
       },
-     
       deleteMsag(allval){
           this.$confirm('此操作将删除该录像, 是否继续?', '提示', {
           confirmButtonText: '确定',

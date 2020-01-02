@@ -4,10 +4,11 @@ import router, { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
+  id: '',
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
 }
 
 const mutations = {
@@ -25,6 +26,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_ID: (state, id) =>{
+    state.id = id
   }
 }
 
@@ -35,12 +39,11 @@ const actions = {
     return new Promise(
       (resolve, reject) => {
         login(
-            { username: username.trim(), password: password }
-          )
-          .then
-          (
+          { username: username.trim(), password: password }
+        )
+          .then(
             response => {
-              console.log('vuex中',response);
+              console.log('vuex中', response)
               const { data } = response
               commit('SET_TOKEN', response.data.token)
               setToken(data.token)
@@ -64,18 +67,24 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
-
+        //const { userId, userName, user_phone, user_photo } = data
+        const { roles, name, avatar, introduction, id } = data
+        //let roles=['admin'] 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
+        commit('SET_ID', id)
+        // commit('SET_PHONE', user_phone)
+        // commit('SET_PHOTO', user_photo)
+        // commit('SET_NAME', userName)
 
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
         resolve(data)
+        console.log(id)
       }).catch(error => {
         reject(error)
       })

@@ -30,7 +30,8 @@ export default {
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      backgroundColor:'' //设置无背景色
     }
   },
   mounted() {

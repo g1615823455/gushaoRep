@@ -1,95 +1,161 @@
 
-Use /* eslint-disable */ to ignore all warnings in a file.
 <template>
-  <div class='hello'>
-    <div style="width:100%;height: 450px;">
-    <!-- <el-carousel :interval="5000" arrow="always">
-    <el-carousel-item v-for="item in img_list" :key="item">
-      <h3><img src="http://g.hiphotos.baidu.com/zhidao/pic/item/c83d70cf3bc79f3d6e7bf85db8a1cd11738b29c0.jpg" alt=""></h3>
-    </el-carousel-item>
-  </el-carousel> -->
-     <el-carousel :interval="2000" arrow="always" height="450px">
-        <el-carousel-item v-for="item in img_list" :key="item.id">
-           <img :src="item.idView" class="image">        
-        </el-carousel-item>
-      </el-carousel>
+<div>
 
-      </div>
-    <div id='chart1' :style="{width:'500px',height:'300px'}"></div>
-  </div>
+  <div id="myChart" :style="{width: '800px', height: '300px'}"></div>
+  <div id="myChart123" :style="{width: '800px', height: '300px'}"></div>
+</div>
 </template>
 <script>
-// 引入 ECharts 主模块
-var echarts = require('echarts/lib/echarts')
-// 引入柱状图
-require('echarts/lib/chart/bar')
-// 引入提示框和标题组件
-require('echarts/lib/component/tooltip')
-require('echarts/lib/component/title')
+import echarts from 'echarts'
 export default {
+  name: 'hello',
   data() {
     return {
-      img_list:[
-      {id:0,idView:require("../../assets/images/009.png")},
-      {id:1,idView:require("../../assets/images/010.png")},
-      {id:2,idView:require("../../assets/images/011.png")}
-      ]
+      
     }
   },
   mounted() {
-    let that = this
-    this.drawLine()
+    this.drawLine("myChart");
+    this.drawLine("myChart123");
   },
   methods: {
-    drawLine() {
-      let myChart = this.$echarts.init(document.getElementById('chart1'))
-      myChart.setOption({
-        series: [
-          {
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            itemStyle: {
-              normal: {
-                // 阴影的大小
-                shadowBlur: 200,
-                // 阴影水平方向上的偏移
-                shadowOffsetX: 0,
-                // 阴影垂直方向上的偏移
-                shadowOffsetY: 0,
-                // 阴影颜色
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
+    drawLine(divName){
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = this.$echarts.init(document.getElementById(divName))
+        // 图表得相关信息
+         let option = {
+            backgroundColor:'#323a5e',
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                }
             },
-            data: [
-              { value: 400, name: '搜索引擎' },
-              { value: 335, name: '直接访问' },
-              { value: 310, name: '邮件营销' },
-              { value: 274, name: '联盟广告' },
-              { value: 235, name: '视频广告' }
-            ]
-          }
-        ]
-      })
+            grid: {
+            left: '2%',
+            right: '4%',
+            bottom: '14%',
+            top:'16%',
+            containLabel: true
+            },
+            legend: {
+                data: ['1', '2'],
+                right: 10,
+                top:12,
+                textStyle: {
+                    color: "#fff"
+                },
+                itemWidth: 12,
+                itemHeight: 10,
+                // itemGap: 35
+            },
+            xAxis: {
+                type: 'category',
+                data: ['00：00','01：00','02：00','03：00','04：00','05：00','06：00','07：00','08：00','09：00','10：00','11：00',
+                        '12：00','13：00','14：00','15：00','16：00','17：00','18：00','19：00','20：00','21：00','22：00','23：00'],
+                axisLine: {
+                    lineStyle: {
+                    color: 'white'
+
+                    }
+                },
+                axisLabel: {
+                    // interval: 0,
+                    // rotate: 40,
+                    textStyle: {
+                    fontFamily: 'Microsoft YaHei'
+                    }
+                },
+            },
+            yAxis: {
+                type: 'category',
+                //max:'100',
+                data: ['无','有'],
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                    color: 'white'
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                    color: 'rgba(255,255,255,0.3)'
+                    }
+                },
+                axisLabel: {}
+            },
+            "dataZoom": [{
+                "show": true,
+                "height": 12,
+                "xAxisIndex": [
+                    0
+                ],
+                bottom:'8%',
+                "start": 10,
+                "end": 90,
+                handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                handleSize: '110%',
+                handleStyle:{
+                    color:"#d3dee5",
+
+                },
+                textStyle:{color:"#fff"},
+                borderColor:"#90979c"
+                }, 
+                {
+                "type": "inside",
+                "show": true,
+                "height": 15,
+                "start": 1,
+                "end": 35
+                }
+            ],
+            series: [{
+                name: '1',
+                type: 'bar',
+                barWidth: '15%',
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#fccb05'
+                        }, {
+                            offset: 1,
+                            color: '#f5804d'
+                        }]),
+                        barBorderRadius: 12,
+                    },
+                },
+                data: [0, 0, 0, 0, 0, 0, 0, 1, 0]
+            },
+            {
+                name: '2',
+                type: 'bar',
+                barWidth: '15%',
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#8bd46e'
+                        }, {
+                            offset: 1,
+                            color: '#09bcb7'
+                        }]),
+                        barBorderRadius: 11,
+                    }
+                },
+                data: ['无', '无', '无', '无', '无', '无', '无', '有', '无']
+            }]
+         };
+        // 绘制图表
+        myChart.setOption(option);
     }
   }
 }
 </script>
 <style scoped>
-.el-carousel__item h3 {
-    color: #475669;
-    font-size: 18px;
-    opacity: 0.75;
-    line-height: 300px;
-    margin: 0;
-  }
-  
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-  
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-  }
+    
 </style>
 
