@@ -1,142 +1,333 @@
 <template>
-<div>
+<div class="mesg">
+  <div class="mesg-header" style="margin-top:10px">
+    <div class="block" style="float: left">
+       <span class="demonstration">选择日期</span>
+        <el-date-picker
+        v-model="value1"
+        type="daterange"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        >
+        </el-date-picker>
+        <el-button type="primary" icon="el-icon-search" size="small" @click="search">查询</el-button>
+    </div>
+    <div style="float: right">
+      <el-button @click="deleteSelection()">批量删除</el-button>
+      <el-button @click="deleteHandeleMes()">清空日志</el-button>
+    </div>
+  </div>
+  <br>
+  <div>
+  <el-table
+    ref="multipleTable"
+    :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+    tooltip-effect="dark"
+    style="width: 100%"
+    @selection-change="handleSelectionChange" 
+    @row-click="getDetails">
+    <el-table-column
+      type="selection"
+      width="55"
+      align="center">
+    </el-table-column>
+    <el-table-column
+      prop="newsDate"
+      label="记录时间"
+      width="230" 
+      align="center"
+      :formatter="dateString"
+      >
+    </el-table-column>
+    <el-table-column
+      prop="newsHeader"
+      label="CO2"
+      width="150" 
+      align="center">
+    </el-table-column>
+    <el-table-column
+      prop="news"
+      label="温度"
+      width="350" 
+      align="center">
+    </el-table-column>
+    <el-table-column
+      prop="湿度"
+      label="处理结果"
+      width="200" 
+      align="center">
+    </el-table-column>
+    <el-table-column
+      prop="newsHandled"
+      label="可燃气体"
+      width="120" 
+      align="center" 
+      :formatter="formatBoolean">
+    </el-table-column>
+    <el-table-column
+      prop="newsHandled"
+      label="烟雾"
+      width="120" 
+      align="center" 
+      :formatter="formatBoolean">
+    </el-table-column>
+    <el-table-column
+      prop="news"
+      label="危险等级"
+      width="350" 
+      align="center">
+    </el-table-column>
+    <el-table-column
+      align="center" 
+      label="操作"
+      width="200">
+      <template slot-scope="scope">
+      <el-button icon="el-icon-delete" type="danger" size="small" @click="flagChange1">删除</el-button>
+      </template>
+    </el-table-column>
+    </el-table>
+  </div>
+  <!--
+  -->
+  <div class="fenye" >
+    <center>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage4"
-      :page-sizes="[20, 40, 80, 100]"
-      :page-size="100"
+      :page-sizes="pageSizes"
+      :page-size="PageSize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="1000">
+      :total="totalCount">
     </el-pagination>
-  <el-table
-    :data="this.tableData"
-    style="width: 100%"
-    :row-class-name="tableRowClassName">
-    <el-table-column
-      prop="id"
-      label="记录编号"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="date"
-      label="时间"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="dangerous"
-      label="危险等级"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="coo"
-      label="二氧化碳"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="lel"
-      label="可燃气体"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="smoke"
-      label="烟雾"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="temperature"
-      label="温度"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="humidity"
-      label="湿度"
-      width="150">
-    </el-table-column>
-  </el-table>
+    </center>
+  </div>
 </div>
 </template>
 
-<style scoped>
-  .el-table .dangerous-row {
-    background: hsl(19, 100%, 83%);
-  }
-
-  .el-table .normal-row {
-    background: hsl(171, 54%, 95%);
-  }
-</style>
-
 <script>
+import {mapState,mapActions,mapGetters} from 'vuex'
+import { isNull } from 'util';
   export default {
+    data() {
+      return {
+        //总数居
+        tableData:[],
+        // 默认显示第几页
+        currentPage:1,
+        // 总条数，根据接口获取数据长度(注意：这里不能为空)
+        totalCount:1,
+        // 个数选择器（可修改）
+        pageSizes:[5,8,10],
+        // 默认每页显示的条数（可修改）
+        PageSize:8,
+        multipleSelection: [],
+        //  pickerOptions: {
+        //   shortcuts: [{
+        //     text: '最近一周',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+        //   }]
+        // },
+        value1: '',
+        value2: '',
+        //日期选择
+        startDate: new Date(),
+        endDate: new Date(),
+        vvv: 'wsw',
+      }
+    },
+    created(){
+      
+      this.gnews().then(result => {
+      this.tableData=result.list;
+      this.totalCount=result.list.length;
+      })
+    },
     methods: {
-      /*
-      "tableRowClassName": function(row,rowIndex) {
-        if (row.dangerous === '高'||rowIndex === 3) {
-          return 'dangerous-row';
-        } else if (row.dangerous === '正常') {
-          return 'normal-row';
+      ...mapActions('journal',['gnews','dnews','pnews','dAllnews','psomenews','dsomenews','gnewsByDate']),
+      search(){
+          let ti=this.value1;
+        if(ti.length!=0){
+          this.gnewsByDate(ti).then(result=>{
+          this.tableData=result.list;
+          this.totalCount=result.list.length;
+          });
+        }else{
+          this.$alert('请选择查询日期', '查询日期为空', {
+          confirmButtonText: '确定',
+          });
         }
-        return '';
       },
-      */
+      // 时间显示处理
+      dateString(row) {
+        let ds = row.newsDate;
+        let nds=ds.slice(0,10)+" "+ds.slice(11,19);
+        return nds;
+      },
+      //获取表格的行
+      getDetails(row){
+        if(this.vvv==1){
+          this.open(row.newsId);
+        }
+        if(this.vvv==2){
+          this.deleteMsag(row.newsId);
+        }
+      },
+      flagChange(){
+        this.vvv=1;
+      },
+      flagChange1(){
+        this.vvv=2;
+      },
+      //是否已处理
+      formatBoolean: function (row, column, cellValue) {
+        var ret = ''  //你想在页面展示的值
+        if (cellValue) {
+            ret = "是"  //根据自己的需求设定
+        } else {
+            ret = "否"
+        }
+        return ret;
+      },
+      //多选删除
+      deleteSelection(){
+        let allrow=this.$refs.multipleTable.selection;
+        let ids="";
+        ///News/byNewsIds?newsIds=33%2C34
+        if (allrow.length!=0) {
+          allrow.forEach(allrow => {
+            ids=ids+allrow.newsId+",";
+          });
+        this.deletesome(ids);
+        } else {
+          this.$alert('请选中要删除的行', '删除行未选择', {
+          confirmButtonText: '确定',
+          });
+        }
+      },
+      deletesome(q){
+        this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.dsomenews(q).then(result=>{
+          this.tableData=result.list;
+          this.totalCount=result.list.length;
+          });
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+      handleButton(val){
+        
+      },
+      
+      //处理结果信息输入
+      open(val233) {
+        this.$prompt('请输入处理结果', '处理预警信息', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]/,
+          // inputErrorMessage: '内容不能为空'
+          //id=12&newsResult=
+          }).then(({value},)=>{
+            let s="id="+val233+"&newsResult="+value;
+            this.pnews(s).then(result=>{
+            this.tableData=result.list;
+            this.totalCount=result.list.length;
+            });
+            this.$message({
+              type: 'success',
+              message: '处理结果:'+value,
+            });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });       
+        });
+
+      },
+      //删除记录
+      deleteMsag(val133){
+          this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.dnews(val133).then(result=>{
+          this.tableData=result.list;
+          this.totalCount=result.list.length;
+        });
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      //分页
+      // 每页显示的条数
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        //console.log(`每页 ${val} 条`);
+        // 改变每页显示的条数 
+        this.PageSize=val
+        // 注意：在改变每页显示的条数时，要将页码显示到第一页
+        this.currentPage=1
       },
+      // 显示第几页
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        //console.log(`当前页: ${val}`);
+        // 改变默认的页数
+        this.currentPage=val
+      },
+      //删除已处理
+      
+      deleteHandeleMes(){
+        this.$confirm('此操作将删除所有已处理记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          
+          this.$message({
+            type: 'success',
+            message: '删除成功!',
+          });
+          this.dAllnews("true").then(result=>{
+          this.tableData=result.list;
+          this.totalCount=result.list.length;
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       }
-    },
-    data() {
-      return {
-        tableData: [{
-          id: '1',
-          date: '2016-05-02-11:00',
-          dangerous: '正常',
-          coo: '1100PPM',
-          lel: '无',
-          smoke: '无',
-          temperature: '20°C',
-          humidity: '60%',
-        }, {
-          id: '2',
-          date: '2016-05-03-11:00',
-          dangerous: '正常',
-          coo: '1100PPM',
-          lel: '无',
-          smoke: '无',
-          temperature: '20°C',
-          humidity: '60%',
-        }, {
-          id: '3',
-          date: '2016-05-04-11:00',
-          dangerous: '高',
-          coo: '1100PPM',
-          lel: '无',
-          smoke: '无',
-          temperature: '20°C',
-          humidity: '60%',
-        }, {
-          id: '4',
-          date: '2016-05-05-11:00',
-          dangerous: '正常',
-          coo: '1100PPM',
-          lel: '无',
-          smoke: '无',
-          temperature: '20°C',
-          humidity: '60%',
-        }]
-      }
-    },
-    /*
-    data() {
-      return {
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
-      };
     }
-    */
   }
 </script>
