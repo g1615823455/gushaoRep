@@ -1,19 +1,19 @@
 <template>
   <div class="drawer-container">
     <div>
-      <h3 class="drawer-title">Page style setting</h3>
+      <h3 class="drawer-title">页面风格设置</h3>
 
-      <div class="drawer-item">
+      <!-- <div class="drawer-item">
         <span>Theme Color</span>
         <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
-      </div>
+      </div> -->
 
       <div class="drawer-item">
-        <span>Open Tags-View</span>
+        <span>启用面包屑</span>
         <el-switch v-model="tagsView" class="drawer-switch" />
       </div>
-
-      <div class="drawer-item">
+      <h3 class="drawer-title">安防情景设置</h3>
+      <!-- <div class="drawer-item">
         <span>Fixed Header</span>
         <el-switch v-model="fixedHeader" class="drawer-switch" />
       </div>
@@ -21,8 +21,11 @@
       <div class="drawer-item">
         <span>Sidebar Logo</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
+      </div> -->
+      <div class="drawer-item">
+        <span>归家/离家</span>
+        <el-switch  class="drawer-switch" />
       </div>
-
     </div>
   </div>
 </template>
@@ -33,7 +36,9 @@ import ThemePicker from '@/components/ThemePicker'
 export default {
   components: { ThemePicker },
   data() {
-    return {}
+    return {
+      
+    }
   },
   computed: {
     fixedHeader: {

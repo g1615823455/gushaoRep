@@ -29,7 +29,8 @@
     @row-click="getDetails">
     <el-table-column
       type="selection"
-      width="55">
+      width="55"
+      align="center">
     </el-table-column>
     <el-table-column
       prop="newsDate"

@@ -54,12 +54,12 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/home', // 仪表盘页面
+    redirect: '/home', // 首页
     children: [
       {
         path: 'home',
         component: () => import('@/pages/home/Home'),
-        name: 'Dashboard',
+        name: 'home',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
@@ -88,74 +88,52 @@ export function resetRouter() {
  */
 export const asyncRoutes = [
   {
-    path: '/example',
+    path: '/fire',
     component: Layout,
     redirect: '/example/list',
-    name: 'Example',
+    name: 'fire',
     meta: {
-      title: '数据展示',
+      title: '消防',
       icon: 'example',
       roles: ['admin','ordinary']
     },
     children: [
       {
-        //二级
-        path:'/historydata',
-        component: () => import('@/pages/data/HistoryData/index.vue'),
-        name:'historydata',
-        meta:{title:'历史记录',icon:'edit',roles: ['admin','ordinary'] },
-        children:[
-          {
-            path: 'rzjl',
-            component: () => import('@/pages/data/HistoryData/日志记录.vue'),
-            name: 'rzjl',
-            meta: { title: '日志记录', icon: 'edit',roles: ['admin','ordinary'] }
-          },
-          {
-            //三级
-            path: 'keyboard',
-            component: () => import('@/pages/data/HistoryData/温湿度.vue'),
-            name: 'keyboard',
-            meta: { title: '温湿度', icon: 'edit',roles: ['admin','ordinary'] }
-          },
-          {
-            path: 'linemarker',
-            component: () => import('@/pages/data/HistoryData/二氧化碳.vue'),
-            name: 'linemarker',
-            meta: { title: '二氧化碳', icon: 'edit',roles: ['admin','ordinary'] }
-          },
-          {
-            path: 'mixchart',
-            component: () => import('@/pages/data/HistoryData/烟雾可燃气.vue'),
-            name: 'mixchart',
-            meta: { title: '烟雾可燃气', icon: 'edit',roles: ['admin','ordinary'] }
-          },
-        ]
+        path: 'journal',
+        component: () => import('@/pages/fireData/journal.vue'),
+        name: 'journal',
+        meta: { title: '日志记录', icon: 'list',roles: ['admin','ordinary'] }
       },
       {
-        path: 'showdata',
-        component: () => import('@/pages/data/ShowData'),
-        name: 'showdata',
-        meta: { title: '消防实时数据', icon: 'edit',roles: ['admin','ordinary'] }
+        path:'/reportForm',
+        component: () => import('@/pages/fireData/reportForm.vue'),
+        name:'reportForm',
+        meta:{title:'数据报表',icon:'chart',roles: ['admin','ordinary'] },
       },
-      // {
-      //   path: 'historydata',
-      //   component: () => import('@/pages/data/HistoryData'),
-      //   name: 'historydata',
-      //   meta: { title: '历史数据', icon: 'edit' }
-      // },
-
+    ]
+  },
+  {
+    path: '/video',
+    component: Layout,
+    redirect: '/video/list',
+    name: 'video',
+    meta: {
+      title: '安防',
+      icon: 'guide',
+      roles: ['admin','ordinary']
+    },
+    children: [
       {
         path: 'monitor',
-        component: () => import('@/pages/data/Monitor'),
+        component: () => import('@/pages/secData/Monitor'),
         name: 'monitor',
-        meta: { title: '实时监控', icon: 'list',roles: ['admin','ordinary'] }
+        meta: { title: '实时监控', icon: 'component',roles: ['admin','ordinary'] }
       },
       {
         path: 'video',
-        component: () => import('@/pages/data/Video'),
+        component: () => import('@/pages/secData/Video'),
         name: 'video',
-        meta: { title: '录像信息', icon: 'list',roles: ['admin','ordinary'] }
+        meta: { title: '录像信息', icon: 'tab',roles: ['admin','ordinary'] }
       }
     ]
   },
@@ -165,7 +143,7 @@ export const asyncRoutes = [
     redirect: '/message/list',
     name: 'message',
     meta: {
-      title: '消息预警中心',
+      title: '消息预警',
       icon: 'message',
       roles: ['admin','ordinary']
     },
@@ -174,7 +152,7 @@ export const asyncRoutes = [
         path: 'message',
         component: () => import('@/pages/message/Message'),
         name: 'message',
-        meta: { title: '预警消息展示', icon: 'edit',roles: ['admin','ordinary'] }
+        meta: { title: '预警消息', icon: 'edit',roles: ['admin','ordinary'] }
       },
       
     ]
@@ -185,7 +163,7 @@ export const asyncRoutes = [
     redirect: '/my/list',
     name: 'my',
     meta: {
-      title: '个人中心',
+      title: '个人信息',
       icon: 'my',
       roles: ['admin','ordinary']
     },
@@ -214,7 +192,7 @@ export const asyncRoutes = [
         path: 'administer',
         component: () => import('@/pages/administer/administer'),
         name: 'UserAdminister',
-        meta: { title: '用户管理', icon: 'user', roles: ['admin']}
+        meta: { title: '用户管理', icon: 'peoples', roles: ['admin']}
       },
       
     ]
